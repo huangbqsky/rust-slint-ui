@@ -64,18 +64,14 @@ slint::slint! {
         solved: bool,
     }
 
-    component MemoryTile inherits Rectangle {
-        width: 64px;
-        height: 64px;
+    component GameOverTile inherits Rectangle {
         background: #3960D5;
+        in property <bool> show;
     
-        Image {
-            source: @image-url("icons/bus.png");
-            width: parent.width;
-            height: parent.height;
-        }
         Text {
-            text: "hello world";
+            width: show ? 326px : 0px;
+            height: show ? 326px : 0px;
+            text: "Game Over";
             color: red;
         }
     }
@@ -128,7 +124,12 @@ slint::slint! {
         width: 326px;
         height: 326px;
 
-        callback check_if_pair_solved(); // Added 检查两个图块是否打开已配对
+        GameOverTile {
+            background: #3911D5;
+            show : false;
+        }
+
+        callback check_if_pair_solved(); // Added 回调函数：检查两个图块是否打开已配对
         in property <bool> disable_tiles; // Added
  
         in property <[TileData]> memory_tiles: [

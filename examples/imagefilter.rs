@@ -87,7 +87,7 @@ pub fn main() {
     #[cfg(not(target_arch = "wasm32"))]
     let source_image = {
         let mut cat_path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        cat_path.push("cat.jpg");
+        cat_path.push("images/cat.jpg");
         image::open(&cat_path).expect("Error loading cat image").into_rgba8()
     };
 

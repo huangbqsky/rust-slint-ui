@@ -1,5 +1,26 @@
 fn main() {
-    MainWindow::new().unwrap().run().unwrap();
+    // MainWindow::new().unwrap().run().unwrap();
+
+    use slint::Model;
+    
+    let main_window = MainWindow::new().unwrap();
+    // Fetch the tiles from the model(从 Model中获取图块列表)
+    let mut tiles: Vec<TileData> = main_window.get_memory_tiles().iter().collect();
+    // 复制一份图块数据，确保整体上是成对的，因为游戏就要上翻牌来配对图块
+    tiles.extend(tiles.clone());
+
+    // 随机混合一下，就是打乱所有图标
+    use rand::seq::SliceRandom;
+    let mut rng = rand::thread_rng();
+    tiles.shuffle(&mut rng);
+
+    // 将打乱后的 Vec 分配给模型属性
+    let tiles_model = std::rc::Rc::new(slint::VecModel::from(tiles));
+    // 重新设置memory_tiles的值
+    main_window.set_memory_tiles(tiles_model.clone().into());
+
+   // 运行 main_window
+    main_window.run().unwrap();
 }
 
 slint::slint! {
@@ -15,18 +36,18 @@ slint::slint! {
         in property <bool> open_curtain;
         in property <bool> solved;
         in property <image> icon;
-    
+
         height: 64px;
         width: 64px;
         background: solved ? #34CE57 : #3960D5;
         animate background { duration: 800ms; }
-    
+
         Image {
             source: icon;
             width: parent.width;
             height: parent.height;
         }
-    
+
         // Left curtain
         Rectangle {
             background: #193076;
@@ -35,7 +56,7 @@ slint::slint! {
             height: parent.height;
             animate width { duration: 250ms; easing: ease-in; }
         }
-    
+
         // Right curtain
         Rectangle {
             background: #193076;
@@ -45,7 +66,7 @@ slint::slint! {
             animate width { duration: 250ms; easing: ease-in; }
             animate x { duration: 250ms; easing: ease-in; }
         }
-    
+
         TouchArea {
             clicked => {
                 // Delegate to the user of this element
@@ -53,11 +74,11 @@ slint::slint! {
             }
         }
     }
-    
+
     export component MainWindow inherits Window {
         width: 326px;
         height: 326px;
- 
+
         in property <[TileData]> memory_tiles: [
             { image: @image-url("icons/at.png") },
             { image: @image-url("icons/balance-scale.png") },

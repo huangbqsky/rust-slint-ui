@@ -126,7 +126,7 @@ slint::slint! {
 
         GameOverTile {
             background: #3911D5;
-            show : false;
+            show : true;
         }
 
         callback check_if_pair_solved(); // Added 回调函数：检查两个图块是否打开已配对

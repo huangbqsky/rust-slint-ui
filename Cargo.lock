@@ -2002,6 +2002,7 @@ dependencies = [
 name = "rust-slint-ui"
 version = "0.1.0"
 dependencies = [
+ "image",
  "rand",
  "slint",
 ]

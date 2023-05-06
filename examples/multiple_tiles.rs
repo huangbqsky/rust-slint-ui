@@ -11,22 +11,6 @@ slint::slint! {
     }
 
     component MemoryTile inherits Rectangle {
-        width: 64px;
-        height: 64px;
-        background: #3960D5;
-    
-        Image {
-            source: @image-url("icons/bus.png");
-            width: parent.width;
-            height: parent.height;
-        }
-        Text {
-            text: "hello world";
-            color: red;
-        }
-    }
-
-    component MemoryTile inherits Rectangle {
         callback clicked;
         in property <bool> open_curtain;
         in property <bool> solved;
@@ -88,8 +72,8 @@ slint::slint! {
         // 我们使用i索引根据其行和列计算图块的位置，使用模和整数除法创建 4 x 4 网格。
         // 运行它会为我们提供一个显示 8 个图块的窗口，这些图块可以单独打开。
         for tile[i] in memory_tiles : MemoryTile {
-            x: mod(i, 4) * 74px;
-            y: floor(i / 4) * 74px;
+            x: mod(i, 4) * 74px + 20px; // 调整坐标，尽量使整体居中
+            y: floor(i / 4) * 74px + 20px; // 调整坐标，尽量使整体居中
             width: 64px;
             height: 64px;
             icon: tile.image;

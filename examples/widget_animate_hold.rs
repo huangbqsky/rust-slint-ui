@@ -13,6 +13,7 @@ slint::slint! {
     }
 
     export component MainWindow inherits Window {
+        // 动画状态过渡
         states [
             // 摁下状态动画
             left-aligned when b1.pressed: {

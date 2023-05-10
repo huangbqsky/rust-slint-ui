@@ -9,3 +9,7 @@ edition = "2021"
 rand = "0.8"
 slint = "1"
 image = { version = "0.24.0", default-features = false, features = [ "png" ] }
+
+
+[build-dependencies]
+slint-build = "1"

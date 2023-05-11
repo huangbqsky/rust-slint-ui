@@ -63,19 +63,6 @@ slint::slint! {
         image_visible: bool,
         solved: bool,
     }
-
-    component GameOverTile inherits Rectangle {
-        background: #3960D5;
-        in property <bool> show;
-    
-        Text {
-            width: show ? 326px : 0px;
-            height: show ? 326px : 0px;
-            text: "Game Over";
-            color: red;
-        }
-    }
-
     component MemoryTile inherits Rectangle {
         callback clicked;
         in property <bool> open_curtain;
@@ -124,11 +111,6 @@ slint::slint! {
         width: 326px;
         height: 326px;
 
-        GameOverTile {
-            background: #3911D5;
-            show : true;
-        }
-
         callback check_if_pair_solved(); // Added 回调函数：检查两个图块是否打开已配对
         in property <bool> disable_tiles; // Added
  
@@ -157,8 +139,8 @@ slint::slint! {
             solved: tile.solved;
             clicked => {
                 // old: tile.image_visible = !tile.image_visible;
-                // new:
-                if (!root.disable_tiles) { // 当计时器运行时，禁用每个图块，因此在此期间不能单击任何内容。
+                // new: 当计时器运行时，禁用每个图块，因此在此期间不能单击任何内容。
+                if (!root.disable_tiles) { 
                     tile.image_visible = !tile.image_visible;
                     root.check_if_pair_solved();
                 }

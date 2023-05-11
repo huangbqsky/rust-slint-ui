@@ -1,0 +1,556 @@
+import { CheckBox, Button, ListView, LineEdit, StandardButton, VerticalBox, CheckBox, Slider, GroupBox, LineEdit } from "std-widgets.slint";
+
+// Window 是一个窗体的根, 这里创建一个窗体
+// 下面是公共属性, 所有的 "可以看见" 的元素都有这些公共属性
+// slint中, 所有的子元素默认相对在在父元素的 0, 0 的坐标, 默认是没有布局的, 都重叠在一起
+export component MyWindow inherits Window {
+    // 窗体特有的属性
+    title: "my title";  // 设置窗体标题
+    // icon: ;  // 不会用, 后面再查
+    no-frame: false;  // 窗口是否无边框
+
+    default-font-size: 10px;  // 设置窗口内默认的文字大小
+    // default-font-family: ;  // 设置窗口使用的字体系列
+    default-font-weight: 900;  // 设置窗口默认的字体粗细 100~900
+
+
+    // 公共属性
+    preferred-width: 180px;  // 元素默认的宽度
+    preferred-height: 180px;  // 元素默认的宽度
+    // min-width: 100px;  // 可以被拉伸的最小宽度
+    // min-height: 100px;  // 可以被拉伸的最小高度
+    // max-width: 200px;  // 可以被拉伸的最大宽度
+    // max-height: 200px;  // 可以被拉伸的最大高度
+
+    // width: 100px;  // 设置固定宽度, 后续不可使用鼠标拉伸调整大小(!注意, 这个参数和上面冲突)
+    // height: 100px;  // 设置固定高度, 后续不可使用鼠标拉伸调整大小(!注意, 这个参数和上面冲突)
+  
+    background: green;  // 背景色
+    visible: false;  // 当设置为false时, 元素和他所有子元素都 不会被 绘制 并且不会对鼠标输入做出反应 默认值true (注意这对窗体无效)
+    cache-rendering-hint: true;  // 增加渲染速度, 但是增加内存消耗 默认值为 false
+
+
+    // Rectangle 矩形 是是一个 没有边框 没有内容 的元素 其宽度或高度默认为父元素的 100% https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#rectangle
+    mu := Rectangle{
+        x: 20px;  // 设置元素x轴位置 相对于其父元素的位置
+        y: 20px;  // 设置元素y轴位置 相对于其父元素的位置
+        z: 0;  // 设置z轴 默认为0
+        border-color: blue;  // 边框颜色
+        border-width: 3px;  // 边框粗细
+        border-radius: self.x * 3 - 30px;  // 边框圆角的位置  30px
+        clip: true;  // overflow处理, 是否裁剪子元素, 比如下面的 _temp 矩形 的width 比当前 self 还要宽 下面多余的就不会显示, 默认为false
+  
+        _temp := Rectangle {
+            height: 50px;
+            width: 150px;
+            background: pink;
+        }
+
+        height: 100px;
+        width: 100px;
+        background: red;  // 背景色
+        horizontal-stretch: 0.1;  // 文档上说是控制拉伸的, 不明白干嘛的
+        vertical-stretch: 0.1;  // 文档上说是控制拉伸的, 不明白干嘛的
+
+        // 字体 元素 https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#text
+        text := Text {
+            text: "你好hello0012345123asdf哈";
+            font-size: 25px;  // 设置文字大小
+            width:90px;  // 指定元素宽度
+            height: 100px;
+            wrap: TextWrap.word-wrap;  // 设置超过字体宽度或者高度换行
+            overflow: TextOverflow.elide;  // 文本溢出的时候会发生什么 默认会剪掉 clip, 比如这个就高度剪掉了
+    
+            // horizontal-alignment  // 文本水平对齐方式
+            // vertical-alignment  // 文本垂直对齐方式
+            letter-spacing: 10px;  // 字体间距
+
+            opacity: 0.2;  // 设置透明度: 用于绘制具有透明度的元素及其子元素 默认值为1不透明
+    
+
+            // font-family: ;  // 指定的字体名称
+            // font-size: ;  // 指定字体大小
+            // font-weight: ;  // 指定字体粗细
+            color: green;
+
+        }
+
+        // 矩形 阴影
+        drop-shadow-offset-x: 10px;  // 设置阴影水平距离
+        drop-shadow-offset-y: -10px;  // 设置阴影垂直距离
+        drop-shadow-color: yellow;  // 设置阴影颜色
+        drop-shadow-blur: 5px;  // 设置阴影的模糊半径 0px表示不进行模糊
+    }
+
+
+    // 图片 元素, 只支持svg格式图片  https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#image
+    Image {
+        x: 10px;
+        y: 120px;
+        source: @image-url("./slint-logo-full-light.svg");  // 资源路径
+        width: 250px;  // 设置宽度, 默认值是source图像提供的尺寸, 如果手动设定了width或者height 其中任意一个, 则另一个会进行等比例缩放
+
+        // 缩放相关
+        // image-fit  // 指定图像的缩放方式
+        // image-rendering  指定图像的缩放算法
+
+        // 旋转
+        rotation-origin-x: 10px;  // 设置旋转中心的x轴位置
+        rotation-origin-y: 10px;  // 设置旋转中心y轴的位置
+        rotation-angle: 30deg;  // 旋转角度 单位 deg
+  
+        // 精灵图
+        // source-clip-x: 0;  // 切割从源资源的x轴位置
+        // source-clip-y: 0;  // 切割从源资源的y轴的位置
+        // source-clip-height: 90;  // 切割高度
+        // source-clip-width: 300;  // 切割宽度
+
+
+        // colorize: red;  // 设置后，图像用作 alpha 蒙版并淹没在给定颜色 或渐变中
+    } 
+
+}
+
+
+// 使用svg命令绘制几何
+// Example1 := Path {
+//     width: 100px;
+//     height: 100px;
+//     commands: "M 0 0 L 0 100 A 1 1 0 0 0 100 100 L 100 0 Z";
+//     stroke: red;
+//     stroke-width: 1px;
+// }
+
+// 手动的绘制 Path元素允许呈现由不同几何命令组成的通用形状 其宽度或高度默认为父元素的 100%
+// svg图像 没有使用px的原因是可以随着父元素的大小而等比例变化
+// svg中的坐标 是基于 0,0 的绝对坐标
+export component My_window2 inherits Window {
+
+    min-width: 100px;
+    min-height: 100px;
+    background: pink;
+
+    // 画一个梯形
+    my_path := Path {
+        // width: 100px;
+        // height: 100px;
+        stroke: blue;
+        stroke-width: 2px;
+        padding: 0px;
+  
+        MoveTo {
+            x: 50;  // 起始的x点
+            y: 10;  // 起始的y点
+        }
+        LineTo {
+            x: 10;  // 60
+            y: 60;  // 70
+        }
+        // ArcTo {
+        //     radius-x: 1;
+        //     radius-y: 1;
+        //     x: 50;
+        //     y: 50;
+        // }
+        LineTo {
+            x: 100;
+            y: 60;
+        }
+        LineTo {
+            x: 80;
+            y: 10;
+        }
+        Close { 
+            // 关闭当前子路径，并从当前位置到路径开头绘制一条直线
+        }
+    }
+}
+
+
+// TouchArea 控制它覆盖的区域被触摸或者使用鼠标交互会发生什么, 默认宽高为父元素的 100%
+export component touch_window inherits Window {
+    width: 500px;
+    height: 500px;
+
+    area := TouchArea {
+        width: parent.width;  // 虽然手动设置了宽高, 但是他本身就是父元素的100%
+        height: parent.height;
+
+        // clicked => { 
+        //     r.background = #e847b5;
+        //  }
+         pointer-event(p) => { 
+            debug(p);
+            r.background = #e847b5;
+        }
+     }
+
+
+    my_t := Text {
+        text: "鼠标滑过窗体, 变红色,  点击后窗体变粉色,";
+        z: 1;
+    }
+
+    // 一个可以交互的窗体
+    r := Rectangle { 
+        width: 100px;
+        height: 100px;
+        background: area.has-hover ? blue:red;
+     }
+}
+
+// FocusScope 控制覆盖区域 在它具有焦点时拦截按下的按键
+export component focus_window inherits Window {
+    width: 100px;
+    height: 100px;
+
+
+    my-key-handler := FocusScope {
+        key-pressed(event) => {
+            debug(event.text);
+            if (event.modifiers.control) {
+                debug("control was pressed during this event");
+            }
+            if (event.text == "a") {
+                debug("222233");
+                parent.background = #e847b5;
+            }
+            accept
+        }
+    }
+
+
+    mt:=Text { 
+        text: "按下a键背景变红";
+     }
+}
+
+
+
+// VerticalLayout/HorizontalLayout 布局 垂直或者水平的为元素进行排版布局
+// 如果没有用width/height固定大小, 则它的布局会根据最大最小尺寸进行 拉伸 每个子元素会进行平分
+
+export component w inherits Window {
+    width: 500px;
+    height: 500px;
+
+    v := VerticalLayout {
+        width: 300px;
+        spacing: 10px;  // 布局中每个元素隔开的距离
+        padding: 10px;  // 内padding 和上面可能有重叠类似BFC
+        // padding-left, padding-right,padding-top和padding-bottom( length )：覆盖特定边的填充
+
+        // max-height: 300px;
+  
+        Rectangle { 
+            width: 100px;
+            // height: 100px;
+            background: red;
+         }
+         Rectangle { 
+            width: 100px;
+            // height: 100px;
+            background: pink;
+         }
+         Rectangle { 
+            // width: 100px;
+            // height: 100px;
+            background: blue;
+         }
+         Rectangle { 
+            width: 100px;
+            // height: 100px;
+            background: green;
+         }
+    }
+}
+
+
+// 网格布局 GridLayout, 他会为每个 子项目添加额外属性：col, row, colspan, rowspan
+// 如果子元素没有设置大小, 则子元素会平分 父元素100%大小
+// col或未row指定 则会计算他们排列
+export component grid inherits Window {
+    width: 200px;
+    height: 200px;
+
+    g := GridLayout {
+        spacing: 5px;
+
+        Row {
+            // 这一行 自动平分为 3等份
+            Rectangle { background: red; }
+            Rectangle { background: blue; }
+            Rectangle { background: green; }
+
+        }
+
+        Row {
+
+            Rectangle { background: yellow; }
+    
+            Rectangle { background: green; row: 2; col: 2;}  // 表示在下标从0开始 2row, 2col的地方有一个绿色矩形
+        }
+    }
+}
+
+
+// 可滚动元素 Flickable, 默认宽高是父元素的100%
+//  当viewport-width 或者viewport-height 超过父元素的时候, 那么 Flickable 元素变得可以滚动
+// 
+
+export component flick inherits Window {
+    width: 300px;
+    height: 300px;
+
+    f := Flickable{
+        // viewport-width: 500px;  // 500px 这里是比父元素大的, 所以可以对这个可滚动元素进行滚动
+        viewport-height: 500px;
+        interactive: true;  // 当为 true 时, 可以通过点击视口并用光标拖动它来滚动视口 默认为 true
+
+  
+
+        r := Rectangle {
+            x: 100px;
+            y: 100px;
+            width: 50px;
+            height: 50px;
+            background: red;
+            Text { 
+                text: "heell";
+             }
+        }
+
+    }
+
+}
+
+
+export component Example12 inherits Window  {
+    width: 270px;
+    height: 100px;
+
+    Flickable {
+        viewport-height: 300px;
+        Text {
+            y: 150px;
+            text: "This is some text that you have to scroll to see";
+        }
+    }
+}
+
+// 输入框 TextInput
+export component text_window inherits Window {
+
+    width: 300px;
+    height: 300px;
+
+    t := TextInput {
+        text: "请输入消息";  // 实际的文本
+        // font-family: ;  // 字体名称
+        font-size: 20px;
+        font-weight: 900;
+        color: pink;
+        // horizontal-alignment: ;  // 文本水平对齐方式
+        // vertical-alignment: ;  // 文本垂直对齐方式
+
+        // has-focus: true;  // 当项目获得焦点并接收键盘事件的时候改变这个属性
+        letter-spacing: 0;  // 字体间距, 正数增加间距, 负数减少间距, 默认0
+        read-only: false;  // 当为 true的时候禁止通过鼠标和键盘编辑, 默认为 false
+        single-line: false;  // 设置为 true的时候禁止换行, 默认 true
+        wrap: TextWrap.word-wrap;  // 文本输入的换行方式, 当 single-line 为false 的时候才有意义
+        // input-type  enum InputType  // 文本的样式 分为 password 和 text, 默认为text
+  
+        accepted() => {
+            debug(" 按下了回车");
+        }
+        edited() => {
+            debug(" 修改了文本");
+        }
+        cursor-position-changed(p) => {
+            debug("光标的位置移动了");
+            debug(p);
+        }
+    }
+}
+
+// LineEdit 用于输入单行文本的小部件
+// 他的属性和多行输入的部件TextInput基本相同
+export component Example inherits Window {
+    min-width: 200px;
+    min-height: 25px;
+  
+    LineEdit {
+        // background: red;
+        font-size: 14px;
+        width: 150px;
+        height: 20px;
+        placeholder-text: "Enter text here";
+    }
+}
+
+
+// PopupWindow 弹出一个 window 元素(注意这不是对话框, 经常用语菜单或者工具提示之类的)
+// 注意：不允许从弹出窗口外部访问弹出窗口内元素的属性
+export component popup inherits Window {
+    width: 200px;
+    height: 200px;
+    ttxt := Text {
+        x: 10px;
+        y: 100px;
+        text: "点击窗体内, 中间的 弹出元素";
+    }
+
+    to := TouchArea {
+        clicked => { 
+            p.show();
+         }
+    }
+
+    p := PopupWindow {
+        x: 10px;
+        y: 10px;
+        width: 50px;
+        height: 50px;
+
+        r := Rectangle { 
+            background: red;
+         }
+    }
+}
+
+
+
+// Dialog 弹出一个对话框, 对话框就像一个窗口 但它有自动布局的按钮
+// 窗口可以有任意数量的StandardButton小部件或其他具有对话框按钮角色属性的按钮
+// StandardButtons和对话框按钮 角色属性的种类属性需要设置为特定值, 它不能是复杂的表达式, 不能有多个相同类型的StandardButton
+// 对于每个没有显式回调处理程序的StandardButton，都会自动添加一个callback＜kind＞_click这样就可以从本机处理它, 例如，如果有cancel按钮, 将添加cancel_clicked回调
+// 使用slint-viewer程序查看时ok cancel  和close按钮将导致对话框关闭
+export component dia_window inherits Window {
+    height: 300px;
+    width: 300px;
+  
+    Example := Dialog {
+        title: "这是一个弹窗";
+  
+  
+        Text {
+          text: "This is a dialog box";
+        }
+        StandardButton { 
+            kind: ok;
+            clicked => { 
+                debug("点击了ok");
+             }
+         }
+
+        StandardButton { kind: close; }
+        // StandardButton { kind: close; }  // 注意禁止有想同类型的 StandardButton
+
+        Button {
+          text: "More Info";
+        //   dialog-button-role: action;
+          dialog-button-role: DialogButtonRole.apply;
+
+          clicked => {
+            debug("点击了按钮")
+           }
+        }
+    }
+}
+
+
+// 按钮小部件
+export component button_window inherits Window {
+    width: 100px;
+    height: 100px;
+
+    r_ := Rectangle { 
+        x: 0px;
+        y: 50px;
+        height: 23px;
+        background: red;
+        text := Text {
+            text: "点击上方按钮变色";
+        }
+     }
+
+     b := Button {
+        y: 10px;
+        x: 10px;
+        width: 60px;
+        height: 30px;
+
+        text: "点我";  // 按钮中的文本
+
+        checkable: false;  // 如果为 true, 那么单击按钮就会被 一直被按住的样子, 再次点击就恢复
+        // checked: true  // 会动态的改变是否被按下去, 和 checkable 可以和搭配使用
+
+        enabled:true;  // 是否可以被按下默认为true, 如果为false, 则按钮无法被按下
+        // icon: Image  // 在按钮中显示的图像 并非所有样式都支持绘图图标
+        // pressed: true; // 按下按钮时设置为真
+
+
+        clicked => { 
+            r_.background = #e847b5;
+         }
+     }
+
+}
+
+// StandardButton 一些预定义的标准按钮
+export component Example1 inherits Window {
+  VerticalBox {
+    StandardButton { kind: ok; }
+    StandardButton { kind: apply; }
+    StandardButton { kind: cancel; }
+  }
+}
+
+
+// CheckBox 复选框
+export component check_window inherits Window {
+    c := CheckBox {
+        text: "这是复选框的文字";
+        // checked: true;  // 复选框是否被选中
+
+        toggled => { 
+            debug("复选框状态改变了")
+         }
+    }
+}
+
+
+
+// Slider 可以拉选的进度框
+export component slider_window inherits Window {
+    width: 200px;
+    height: 20px;
+    Slider { 
+        value: 42;
+        minimum: 0;  // 最小值默认为0
+        maximum: 100; // 最大值默认为100
+
+        changed => { 
+            debug(self.value)
+         }
+     }
+}
+
+
+// GroupBox拥有自动排列布局的一个 元素组
+export component Example2 inherits Window  {
+    width: 200px;
+    height: 100px;
+
+    GroupBox {
+        title: "A Nice Title";  // 作为组框标题
+        Text {  // 一个子元素
+            text: "Hello World";
+            color: blue;
+        }
+        Text {
+            text: "Hello World";
+            color: blue;
+        }
+    }
+}

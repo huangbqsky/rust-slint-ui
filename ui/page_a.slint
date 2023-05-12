@@ -1,0 +1,101 @@
+import {    
+    GroupBox, LineEdit, Button, 
+    Slider, SpinBox,
+    StandardTableView    
+} from "std-widgets.slint";
+
+export component TabPageA inherits Rectangle {
+    // width: 600px;
+    // height: 500px;
+    VerticalLayout { 
+        // line comment
+        /* this is a 
+            /* single */ 
+            comment 
+        */
+        spacing: 5px;
+        padding-left: 25px;
+        padding-right: 25px;
+        alignment: center;
+        Button {
+            text: "Click Me";
+            clicked => { self.text = "Clicked"; }
+        }
+        Text { 
+            height: 50px;
+            font-size: 27px;
+            font-weight: 700;
+            color: #6776FF;  
+            text: "line text";
+         }
+        HorizontalLayout {  
+            width: parent.width;
+            height: 25px;  
+            alignment: center; 
+            spacing: 5px;   
+            
+            Rectangle { 
+                width: 24px;
+                height: 24px;
+                border-radius: root.width / 2;
+                background: red;
+                
+                Rectangle { 
+                    width: 12px;
+                    height: 12px;
+                    border-radius: root.width / 2;
+                    background: white;
+                    x: parent.width/4;
+                    y: parent.height/4;
+                    
+                }
+             }         
+            Slider {
+                //width: parent.width * 3 / 8;
+                height: parent.height;
+                value: 42;
+            }
+            SpinBox {
+                //width: parent.width * 3 / 8;
+                height: parent.height;
+                value: 42;
+            }
+        }
+        GroupBox{
+            title:"Group Box";
+            height: 100px;            
+            LineEdit {
+                placeholder-text: "enter text";
+            }
+        }
+        
+        Rectangle  {
+            width: parent.width * 3 / 4;
+            height: 202px;
+            border-color: #86e086;
+            border-width: 1px;
+            StandardTableView {
+                width: parent.width;
+                height: 200px;
+                columns: [
+                    { title: "colum 1" },
+                    { title: "colum 2" },
+                ];
+                rows: [
+                    [{ text: "item 11" }, { text: "item 12" },],
+                    [{ text: "item 21" }, { text: "item 22" },],
+                    [{ text: "item 31" }, { text: "item 32" },]
+                ];
+            }
+        }  
+        
+        HorizontalLayout {
+            spacing: 5px;
+            height: 30px;
+            Rectangle { background: red; width: 20px; }
+            Rectangle { background: blue; min-width: 10px; }
+            Rectangle { background: yellow; horizontal-stretch: 1; }
+            Rectangle { background: green; horizontal-stretch: 2; }
+        }
+    }
+}

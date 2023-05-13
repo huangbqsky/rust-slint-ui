@@ -51,6 +51,30 @@ slint::slint! {
                 }
                 area1 := TouchArea {}
             }
+          
+            st :=Rectangle {
+                property <bool> active: true;
+                states [
+                    active when active && !ta.has-hover: {
+                        label.text: "Active";
+                        st.background: blue;
+                    }
+                    active-hover when active && ta.has-hover: {
+                        label.text: "Active\nHover";
+                        st.background: green;
+                    }
+                    inactive when !active: {
+                        label.text: "Inactive";
+                        st.background: gray;
+                    }
+                ]
+                label := Text { }
+                ta := TouchArea {
+                    clicked => {
+                        active = !active;
+                    }
+                }
+            }
         }
     }
 }

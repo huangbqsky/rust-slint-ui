@@ -1,12 +1,30 @@
 fn main() {
-    Example::new().unwrap().run().unwrap();
+    // Example::new().unwrap().run().unwrap();
+    let app = Example::new().unwrap();
+    app.global::<Logic>().on_magic_operation(|value| {
+        eprintln!("magic operation input: {}", value);
+        value * 2 // 返回值为输入值的2倍
+    });
+    app.global::<Logic>().set_the_value(42); // 设置值
+
+    // 运行窗体
+    app.run().unwrap();
 }
 
 // slint宏，构建 UI
 slint::slint! {
 
-    // 使用for-in语法多次创建一个元素： for name[index] in model : id := Element { ... }
-    // 在元素中进行查找，索引是可选的，将被设置为该元素在模型中的索引。id也是可选的。
+    // 全局单例
+    // 声明一个全局单例，使属性和回调在整个项目中可用。使用访问它们。
+    // global Name { /* .. properties or callbacks .. */ }Name.property
+    export global Logic  {
+        in-out property <int> the-value;
+        pure callback magic-operation(int) -> int;
+    }
+    component SomeComponent inherits Text {
+        // use the global in any component
+        text: "The magic value is:" + Logic.magic-operation(42);
+    }
 
     export component Example inherits Window {
         preferred-width: 600px;
@@ -19,6 +37,8 @@ slint::slint! {
         ];
 
         VerticalLayout {
+            // 使用for-in语法多次创建一个元素： for name[index] in model : id := Element { ... }
+            // 在元素中进行查找，索引是可选的，将被设置为该元素在模型中的索引。id也是可选的。
             HorizontalLayout {
                 // 整数类型模型：元素将重复
                 for data in root.model: my-repeated-text := Text {
@@ -78,7 +98,7 @@ slint::slint! {
                     }
                 }
             }
-
+            // 动画过渡
             st1 :=Rectangle {
                 preferred-width: 600px;
                 preferred-height: 100px;
@@ -111,6 +131,21 @@ slint::slint! {
                         }
                     }
                 ]
+            }
+
+            // 全局单例
+            Rectangle {
+                preferred-width: 600px;
+                preferred-height: 100px;
+                // re-expose the global properties such that the native code
+                // can access or modify them
+                in-out property new_the-value <=> Logic.the-value;
+                pure callback new_magic-operation <=> Logic.magic-operation;
+
+                SomeComponent {
+                    // 覆盖了组件定义中默认text的值
+                    text: "The magic value is:" + new_magic-operation(10);
+                }
             }
         }
     }

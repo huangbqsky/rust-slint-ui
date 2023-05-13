@@ -53,7 +53,10 @@ slint::slint! {
             }
           
             st :=Rectangle {
+                preferred-width: 600px;
+                preferred-height: 100px;
                 property <bool> active: true;
+                // states语句允许一次性声明多个元素的状态和设置属性：
                 states [
                     active when active && !ta.has-hover: {
                         label.text: "Active";
@@ -74,6 +77,40 @@ slint::slint! {
                         active = !active;
                     }
                 }
+            }
+
+            st1 :=Rectangle {
+                preferred-width: 600px;
+                preferred-height: 100px;
+
+                text := Text { text: "hello"; }
+                ta1 := TouchArea {
+                    clicked => {
+                        pressed = !pressed;
+                        is-enabled = !is-enabled;
+                    }
+                }
+
+                in-out property<bool> pressed;
+                in-out property<bool> is-enabled;
+                // 过渡将动画绑定到状态变化。
+                // 这个例子定义了两个转换。首先out关键字用于在离开disabled状态时为所有属性设置 800 毫秒的动画。
+                // 第二次转换使用in关键字在转换到状态时为背景设置动画down。
+                states [
+                    disabled when !st1.is-enabled : {
+                        background: gray; // same as root.background: gray;
+                        text.color: white;
+                        out {
+                            animate * { duration: 800ms; }
+                        }
+                    }
+                    down when pressed : {
+                        background: blue;
+                        in {
+                            animate background { duration: 300ms; }
+                        }
+                    }
+                ]
             }
         }
     }

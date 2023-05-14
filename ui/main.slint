@@ -1,7 +1,6 @@
 import { TabPageA } from "./ui/page_a.slint";
 import { TabPageB } from "./ui/page_b.slint";
 import { SliderPage } from "./ui/page_slider.slint";
-import { PuzzlePage } from "./ui/page_puzzle.slint";
 
 import { Button } from "std-widgets.slint";
 // 创建自己的自定义选项卡小部件Tabs
@@ -24,10 +23,6 @@ export component MainWindow inherits Window {
                 text: "Slider";
                 clicked => { root.active-tab = 2; }
             }
-            Button {
-                text: "Puzzle";
-                clicked => { root.active-tab = 3; }
-            }
         }
         Rectangle {
             clip: true;
@@ -44,11 +39,6 @@ export component MainWindow inherits Window {
             SliderPage {
                 background: green;
                 x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
-                animate x { duration: 125ms; easing: ease; }
-            }
-            PuzzlePage {
-                // background: green;
-                x: root.active-tab == 3 ? 0 : root.active-tab < 3 ? - self.width - 1px : parent.width + 1px;
                 animate x { duration: 125ms; easing: ease; }
             }
         }

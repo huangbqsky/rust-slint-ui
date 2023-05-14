@@ -1,21 +1,18 @@
 [package]
-name = "rust-slint-ui"
+name = "gallery"
 version = "0.1.0"
 edition = "2021"
+build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[workspace]
-members = [
-    'gallery',
-    'slide_puzzle'
-]
+[[bin]]
+path = "main.rs"
+name = "gallery"
 
 [dependencies]
-rand = "0.8"
 slint = "1.0.1"
-image = { version = "0.24.0", default-features = false, features = [ "png" ] }
-
 
 [build-dependencies]
 slint-build = "1"
+
+

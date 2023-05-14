@@ -1,0 +1,29 @@
+// Copyright © SixtyFPS GmbH <info@slint-ui.com>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
+
+import { CheckBox, StandardListView, StyleMetrics } from "std-widgets.slint";
+import { AboutPage, ControlsPage, ListViewPage, TableViewPage, TableViewPageAdapter, TextEditPage } from "ui/pages/pages.slint";
+import { GallerySettings } from "ui/gallery_settings.slint";
+import { SideBar } from "ui/side_bar.slint";
+
+export { TableViewPageAdapter }
+
+component App inherits Window {
+    preferred-width: 700px;
+    preferred-height: 500px;
+    title: "Slint Widgets Gallery";
+    icon: @image-url("../logos/slint-logo-small-light-128x128.png");
+
+    HorizontalLayout {
+        side-bar := SideBar {
+            title: "Slint Widgets Gallery";
+            model: ["Controls", "ListView", "TableView", "TextEdit", "About"];
+        }
+
+        if(side-bar.current-item == 0) : ControlsPage {}
+        if(side-bar.current-item == 1) : ListViewPage {}
+        if(side-bar.current-item == 2) : TableViewPage {}
+        if(side-bar.current-item == 3) : TextEditPage {}
+        if(side-bar.current-item == 4) : AboutPage {}
+    }
+}

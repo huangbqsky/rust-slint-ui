@@ -7,8 +7,9 @@ edition = "2021"
 
 [workspace]
 members = [
-    'gallery',
-    'slide_puzzle'
+    'gallery', # slint widgets 画廊工程
+    'slide_puzzle', # slint 幻灯片拼图游戏工程
+    'printerdemo' # slint 嵌入式打印机 demo 工程
 ]
 
 [dependencies]

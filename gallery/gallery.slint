@@ -15,11 +15,12 @@ component App inherits Window {
     icon: @image-url("../logos/slint-logo-small-light-128x128.png");
 
     HorizontalLayout {
+        // 左侧 Bar
         side-bar := SideBar {
             title: "Slint Widgets Gallery";
             model: ["Controls", "ListView", "TableView", "TextEdit", "About"];
         }
-
+        // 内容区：XXXPage
         if(side-bar.current-item == 0) : ControlsPage {}
         if(side-bar.current-item == 1) : ListViewPage {}
         if(side-bar.current-item == 2) : TableViewPage {}

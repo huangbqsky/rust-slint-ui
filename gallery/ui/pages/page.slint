@@ -5,10 +5,12 @@ import { CheckBox, GridBox, ListView, ScrollView, VerticalBox } from "std-widget
 
 import { GallerySettings } from "../gallery_settings.slint";
 
+// 定义一个基础 Page 组件模版，必有一个 Text 和一个 CheckBox
 export component Page inherits VerticalBox {
     in property<string> title: "title";
     in property<string> description: "description";
 
+    // 顶部Layout，包括：标题 Text + Disable选择框
     HorizontalLayout {
         height: 24px;
         Text {

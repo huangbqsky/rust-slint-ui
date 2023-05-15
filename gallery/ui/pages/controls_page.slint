@@ -6,6 +6,7 @@ import { Button, GroupBox, SpinBox, ComboBox, CheckBox, LineEdit, TabWidget, Ver
 import { GallerySettings } from "../gallery_settings.slint";
 import { Page } from "page.slint";
 
+// 一些简单组件展示页面
 export component ControlsPage inherits Page {
     title: "Controls";
     description: "This page gives an overview of the default widget set provided by Slint. The widgets are available in different styles native, fluent-(dark/light) and material-(dark/light). The widgets can be imported from \"std-widgets.slint\".";
@@ -50,11 +51,11 @@ export component ControlsPage inherits Page {
             }
 
 
-        SpinBox {
-            vertical-stretch: 0;
-            value: 42;
-            enabled: !GallerySettings.widgets-disabled;
-        }
+            SpinBox {
+                vertical-stretch: 0;
+                value: 42;
+                enabled: !GallerySettings.widgets-disabled;
+            }
 
             ComboBox {
                 model: ["Select Something", "From this", "Combobox"];

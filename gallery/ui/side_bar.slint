@@ -3,6 +3,7 @@
 
 import { StyleMetrics } from "std-widgets.slint";
 
+// 侧边栏 Item 项
 component SideBarItem inherits Rectangle {
     callback clicked <=> touch.clicked;
     in-out property<string> text <=> label.text;
@@ -28,12 +29,12 @@ component SideBarItem inherits Rectangle {
             vertical-alignment: center;
          }
     }
-
+    // 交互区：比如点击、选中、触摸、鼠标摁下、焦点
     touch := TouchArea {
         width: 100%;
         height: 100%;
     }
-
+    // states 保存多个状态
     states [  
         pressed when touch.pressed : {
             state.opacity: 0.8;

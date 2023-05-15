@@ -20,22 +20,23 @@ pub fn main() {
     #[cfg(all(debug_assertions, target_arch = "wasm32"))]
     console_error_panic_hook::set_once();
 
+    // 新建一个Slint 窗体程序
     let app = App::new().unwrap();
-
+    // 获取Table List 数据模型， 这里用到 VecModel，才能修改值
     let row_data: Rc<VecModel<slint::ModelRc<StandardListViewItem>>> = Rc::new(VecModel::default());
-
-    for r in 1..101 {
+    // 重新组织填充数据： 4行100列的矩阵
+    for r in 1..=100 { // 100行
         let items = Rc::new(VecModel::default());
 
-        for c in 1..5 {
+        for c in 1..=4 { // 4列
             items.push(slint::format!("Item {r}.{c}").into());
         }
 
         row_data.push(items.into());
     }
-
+    // 通过全局单例重新设置row_data的值
     app.global::<TableViewPageAdapter>().set_row_data(row_data.clone().into());
-
+    // table list 正序排序
     app.global::<TableViewPageAdapter>().on_sort_ascending({
         let app_weak = app.as_weak();
         let row_data = row_data.clone();
@@ -52,7 +53,7 @@ pub fn main() {
             app_weak.unwrap().global::<TableViewPageAdapter>().set_row_data(sort_model.into());
         }
     });
-
+    // table list 逆序排序
     app.global::<TableViewPageAdapter>().on_sort_descending({
         let app_weak = app.as_weak();
         move |index| {
@@ -68,6 +69,6 @@ pub fn main() {
             app_weak.unwrap().global::<TableViewPageAdapter>().set_row_data(sort_model.into());
         }
     });
-
+    // 运行窗体程序
     app.run().unwrap();
 }

@@ -5,11 +5,13 @@ import { HorizontalBox, GroupBox, TextEdit } from "std-widgets.slint";
 import { GallerySettings } from "../gallery_settings.slint";
 import { Page } from "page.slint";
 
+// 输入框页面： 展示输入框 TextEdit
 export component TextEditPage inherits Page {
     title: "TextEdit";
     description: "Similar to LineEdit, but can be used to enter several lines of text. The widget can be imported from \"std-widgets.slint\".";
-  
-    HorizontalBox {   
+    // 横向组合器组件，展示两个TextEdit
+    HorizontalBox {  
+        // 第一组 TextEdit：wrap属性为word-wrap，即文字包裹，文字太多会换行
         GroupBox {
             vertical-stretch: 0;
             title: "Word-Wrap";
@@ -20,7 +22,7 @@ export component TextEditPage inherits Page {
                 enabled: !GallerySettings.widgets-disabled;
             }
         }
-
+         // 第一组 TextEdit：wrap属性为no-wrap，即无包裹，文字太多会出现滑块
         GroupBox {
             title: "No-Wrap";
             vertical-stretch: 0;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-commercial
 
 import { DemoPalette, PushButton } from "./common.slint";
-
+// PrinterQueueItem 单项 Item 结构体
 export struct PrinterQueueItem  {
     status: string, // WAITING..., PRINTING
     progress: int,
@@ -12,7 +12,7 @@ export struct PrinterQueueItem  {
     size: string, // number instead and format in .slint?
     submission-date: string
 }
-
+// 全局单例打印队列
 export global PrinterQueue  {
     callback start-job(string);
     callback cancel-job(int);
@@ -40,6 +40,7 @@ component PrintQueueSeparator inherits Rectangle {
     horizontal-stretch: 2;
 }
 
+// 打印详情组件
 component PrintDetails inherits GridLayout {
     in property <PrinterQueueItem> queue-item;
     spacing: 3px;
@@ -333,7 +334,7 @@ component WidePrintQueueElement inherits Rectangle {
     }
 }
 
-
+// 打印二级页列表组件(滑动组件)
 export component WidePrinterQueueList inherits Flickable {
 
     VerticalLayout {

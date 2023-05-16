@@ -6,7 +6,7 @@ struct ButtonColors  {
     pressed: color,
     hovered: color,
 }
-
+// 定义一个全局单例，并导出该对象
 export global DemoPalette  {
     // Color of the home/settings/ink buttons on the left side bar
     out property <color> active-page-icon-color: root.night-mode ? #6284FF : #122F7B;
@@ -51,9 +51,10 @@ export global DemoPalette  {
 
     out property <length> base-font-size: 16px;
 
-    in property <bool> night-mode: false;
+    in property <bool> night-mode: false; // 夜间模式
 }
 
+// 定义一个 Page 组件作为各个页面的模版
 export component Page inherits Rectangle {
     in property<string> header <=> h.text;
     background: DemoPalette.page-background-color;
@@ -61,7 +62,7 @@ export component Page inherits Rectangle {
     callback back;
 
     TouchArea {} // protect underneath controls
-
+    // 有些二级页面需要显示返回按钮
     if (root.has-back-button) : Image {
         x:0;
         source: @image-url("images/back.svg");
@@ -72,11 +73,12 @@ export component Page inherits Rectangle {
         height: 24px;
         TouchArea {
             x:0;
+            // 点击返回Icon可以调用 back 函数
             clicked => { root.back() }
             width: 150%;
         }
     }
-
+    // 顶部 Title 组件
     h := Text {
         font-weight: 900;
         font-size: DemoPalette.base-font-size * 2;
@@ -90,13 +92,14 @@ export component Page inherits Rectangle {
         }
     }
 }
+ // Label公共组件，一个定制化背景，大小，居中显示等样式的 Text
 export component Label inherits Text {
     color: DemoPalette.text-foreground-color;
     vertical-alignment: center;
     font-weight: 700;
     vertical-stretch: 0;
 }
-
+ // SquareButton公共组件
 component SquareButton inherits Rectangle {
     callback clicked;
     in-out property<image> img;
@@ -119,6 +122,7 @@ component SquareButton inherits Rectangle {
     }
 }
 
+// SpinBox公共组件
 export component SpinBox inherits Rectangle {
     in-out property <int> value;
     in property <int> minimum;
@@ -164,6 +168,7 @@ export component SpinBox inherits Rectangle {
     }
 }
 
+// ComboBox公共组件
 export component ComboBox inherits Rectangle {
     in-out property<string> value;
     in property<[string]> choices;
@@ -229,7 +234,7 @@ export component ComboBox inherits Rectangle {
         }
     }
 }
-
+// CheckBox选择框公共组件
 export component CheckBox inherits Rectangle {
     in-out property <bool> checked;
     in property <string> text;
@@ -260,7 +265,7 @@ export component CheckBox inherits Rectangle {
         }
     }
 }
-
+// PushButton公共组件
 export component PushButton inherits Rectangle {
     callback clicked;
     in property <string> text <=> label.text;

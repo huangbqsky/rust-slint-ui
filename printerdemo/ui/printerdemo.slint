@@ -7,12 +7,13 @@ import { InkLevel, InkPage } from "./ink_page.slint";
 import { SettingsPage } from "./settings_page.slint";
 import { PrinterQueue } from "./printer_queue.slint";
 
-// re-export for the native code
+// re-export for the native code 导出结构体给本地代码调用
 export { PrinterQueue }
 
 import "./fonts/NotoSans-Regular.ttf";
 import "./fonts/NotoSans-Bold.ttf";
 
+// 侧边栏Item组件
 component SideBarIcon inherits Rectangle {
     in-out property <bool> active;
     callback activate;
@@ -26,7 +27,7 @@ component SideBarIcon inherits Rectangle {
         clicked => { root.activate(); }
     }
 }
-
+// App 主窗体
 component MainWindow inherits Window {
     callback quit();
 
@@ -46,12 +47,12 @@ component MainWindow inherits Window {
                 {color: #000, level: 30%},
             ];
 
-    out property<int> active-page: 0;
-
+    out property<int> active-page: 0; // 当前选中展示页面的索引
+    // 主内容区域
     HorizontalLayout {
         padding: 10px;
         padding-left: 67px;
-
+        // 主内容
         main-view := Rectangle {
             height: 100%;
             border-radius: 30px;
@@ -64,33 +65,34 @@ component MainWindow inherits Window {
                 width: main-view.width - main-view.border-radius;
                 height: main-view.height - main-view.border-radius;
 
-                home-page := HomePage {
+                home-page := HomePage { // HomePage： 索引为0
+                    // 连续 两个 ？ 这语法有点奇葩😓，
                     y: root.active-page == 0 ? 0 : root.active-page < 0 ? - self.height - 1px : parent.height + 1px;
                     animate y { duration: 125ms; easing: ease; }
                 }
-                SettingsPage {
+                SettingsPage { // 设置页面：索引为1
                     y: root.active-page == 1 ? 0 : root.active-page < 1 ? - self.height - 1px : parent.height + 1px;
                     animate y { duration: 125ms; easing: ease; }
                 }
-                InkPage {
+                InkPage { // 墨水页面: 索引为2
                     y: root.active-page == 2 ? 0 : root.active-page < 2 ? - self.height - 1px : parent.height + 1px;
                     animate y { duration: 125ms; easing: ease; }
-                    ink-levels <=> root.ink-levels;
-                    page-visible: root.active-page == 2;
+                    ink-levels <=> root.ink-levels; // 重新绑定ink-levels数组值
+                    page-visible: root.active-page == 2; // 每次进入InkPage，触发一次动画
                 }
             }
         }
     }
-
+    // 侧边栏区域
     sidebar := Rectangle {
         width: 57px;
         x: 10px;
-
+        // 定义一个函数，计算Y位置，并将其用于竖直布局中的主内容区域
         function icon-y(index: int) -> length {
             return 100px // top padding
                 + index * 72px;
         }
-
+        // 选中PageItem的图块
         Image {
             x:0;
             source: @image-url("images/page_selection.svg");
@@ -102,7 +104,7 @@ component MainWindow inherits Window {
             height: 1.75 * self.width;
             colorize: DemoPalette.page-background-color;
         }
-
+        // 依次展示home，settings和ink页面的icon
         for page-icon[idx] in [
             @image-url("images/home.svg"),
             @image-url("images/settings.svg"),
@@ -123,12 +125,12 @@ component MainWindow inherits Window {
                 width: 100%;
                 height: 100%;
             }
-
+            // 点击SideBarIcon，更改页面active-page值
             activate => {
                 root.active-page = idx;
             }
         }
-
+        // 一条分割线
         Rectangle {
             y: sidebar.icon-y(3) + 17px;
             x: 12px;
@@ -136,7 +138,7 @@ component MainWindow inherits Window {
             height: 2px;
             width: 37px;
         }
-
+        // 夜间模式SideBarIcon
         SideBarIcon {
             y: sidebar.icon-y(4);
             x: 16px;
@@ -150,7 +152,7 @@ component MainWindow inherits Window {
                 width: 100%;
                 height: 100%;
             }
-
+            // 切换夜间/正常模式
             activate => {
                 DemoPalette.night-mode = !DemoPalette.night-mode;
             }

@@ -3,11 +3,12 @@
 
 import { DemoPalette, Page } from "common.slint";
 
+// InkLevel结构体
 export struct InkLevel  {
     color: color,
     level: float,
 }
-
+// InkPage 页面，展现一个模拟墨水水平的动画
 export component InkPage inherits Page {
     header: "Ink Level";
 
@@ -23,7 +24,9 @@ export component InkPage inherits Page {
 
         HorizontalLayout {
             spacing: root.width * 5%;
+            // 通过 ink-levels数组确定展示个数
             for color-info in root.ink-levels : Rectangle {
+                // Ink 动画的颜色和水平位置
                 ink := Rectangle {
                     width: parent.width;
                     height: parent.height * color-info.level;
@@ -37,6 +40,7 @@ export component InkPage inherits Page {
                         y: -parent.y;
                     }
                     states [
+                        // 每一次进入页面颜色变化的时候，都会发出一次动画
                         inactive when !root.page-visible : {
                             height: 0;
                             out {
@@ -48,7 +52,7 @@ export component InkPage inherits Page {
                         }
                     ]
                 }
-
+                // 每一个Ink 水平位置线
                 Rectangle {
                     y: max(ink.y - self.height, 0phx);
                     height: 2px;
@@ -59,7 +63,7 @@ export component InkPage inherits Page {
                     x: (parent.width - self.width) / 2;
                     background: DemoPalette.neutral-box;
                 }
-
+                // 每一个Ink 最为层的 border
                 Rectangle {
                     border-radius: self.width / 2;
                     border-color: DemoPalette.neutral-box;

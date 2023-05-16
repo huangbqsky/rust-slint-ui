@@ -8,6 +8,7 @@ import { PrintPage } from "./print_page.slint";
 import { PrinterQueueView } from "./printer_queue.slint";
 import { UsbPage } from "./usb_page.slint";
 
+// 交互按钮组件
 component ActionButton inherits Rectangle {
 
     in property <image> icon <=> img.source;
@@ -41,6 +42,7 @@ component ActionButton inherits Rectangle {
     TouchArea { clicked => { root.clicked() } }
 }
 
+// HomePage页面
 export component HomePage inherits Page {
     in-out property <length> header-row-height: 40px;
 
@@ -50,7 +52,7 @@ export component HomePage inherits Page {
 
     header: "Xerol 1347 hdp";
 
-    in-out property <int> current-subpage: 0;
+    in-out property <int> current-subpage: 0; // 二级页面
 
 
     for action[idx] in [
@@ -69,30 +71,33 @@ export component HomePage inherits Page {
         text: action.name;
         clicked => { root.current-subpage = idx + 1; }
     }
-
+    // 打印队列组件，位置为靠右对齐（x值为父组件宽度 - 自身宽度）
     queue-view := PrinterQueueView {
         x: parent.width - self.width;
         width: 313px;
-        show-job-details(idx) => {
+        show-job-details(idx) => { // 显示打印详情
             root.current-subpage = 1; // Not nice to hard-code the index here...
         }
     }
-
+    // 去打印页面
     PrintPage {
         x: root.current-subpage == 1 ? 0 : parent.width + parent.x + 2px;
         animate x { duration: 125ms; easing: ease; }
         back => { root.current-subpage = 0 }
     }
+    // 去扫描页面
     ScanPage {
         x: root.current-subpage == 2 ? 0 : parent.width + parent.x + 2px;
         animate x { duration: 125ms; easing: ease; }
         back => { root.current-subpage = 0 }
     }
+    // 去复制页面
     CopyPage {
         x: root.current-subpage == 3 ? 0 : parent.width + parent.x + 2px;
         animate x { duration: 125ms; easing: ease; }
         back => { root.current-subpage = 0 }
     }
+    // 去连接usb页面
     UsbPage {
         x: root.current-subpage == 4 ? 0 : parent.width + parent.x + 2px;
         animate x { duration: 125ms; easing: ease; }

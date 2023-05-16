@@ -43,38 +43,45 @@ pub fn main() {
     #[cfg(all(debug_assertions, target_arch = "wasm32"))]
     console_error_panic_hook::set_once();
 
+    // 创建 Slint 窗体程序
     let main_window = MainWindow::new().unwrap();
+    // 重新绑定墨水 ink_level 的值是个InkLevel数组， InkLevel是一个结构体，数值修改需要借助 VecModel完成
     main_window.set_ink_levels(slint::VecModel::from_slice(&[
         InkLevel { color: slint::Color::from_rgb_u8(0, 255, 255), level: 0.40 },
         InkLevel { color: slint::Color::from_rgb_u8(255, 0, 255), level: 0.20 },
         InkLevel { color: slint::Color::from_rgb_u8(255, 255, 0), level: 0.50 },
         InkLevel { color: slint::Color::from_rgb_u8(0, 0, 0), level: 0.80 },
     ]));
-
+    // 获取打印队列（从全局单例）
     let default_queue: Vec<PrinterQueueItem> =
         main_window.global::<PrinterQueue>().get_printer_queue().iter().collect();
+    // 修改PrinterQueueData 结构体
     let printer_queue = Rc::new(PrinterQueueData {
         data: Rc::new(slint::VecModel::from(default_queue)),
         print_progress_timer: Default::default(),
     });
+    // 重新绑定全局单例中printer_queue的值
     main_window.global::<PrinterQueue>().set_printer_queue(printer_queue.data.clone().into());
-
+    // quit（退出程序） 回调处理
     main_window.on_quit(move || {
         #[cfg(not(target_arch = "wasm32"))]
         std::process::exit(0);
     });
 
     let printer_queue_copy = printer_queue.clone();
+    // start_job（启动打印任务） 回调处理
     main_window.global::<PrinterQueue>().on_start_job(move |title| {
         printer_queue_copy.push_job(title);
     });
 
     let printer_queue_copy = printer_queue.clone();
+    // cancel_job（取消打印任务） 回调处理
     main_window.global::<PrinterQueue>().on_cancel_job(move |idx| {
         printer_queue_copy.data.remove(idx as usize);
     });
 
     let printer_queue_weak = Rc::downgrade(&printer_queue);
+    // 启动打印任务的计时器
     printer_queue.print_progress_timer.start(
         slint::TimerMode::Repeated,
         std::time::Duration::from_secs(1),
@@ -98,6 +105,6 @@ pub fn main() {
             }
         },
     );
-
+    // 运行 Slint 窗体
     main_window.run().unwrap();
 }

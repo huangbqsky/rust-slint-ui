@@ -1,0 +1,15 @@
+[package]
+name = "todo"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[[bin]]
+path = "main.rs"
+name = "todo"
+
+[dependencies]
+slint = "1.0.1"
+
+[build-dependencies]
+slint-build = "1"

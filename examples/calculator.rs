@@ -75,8 +75,13 @@ slint::slint! {
             border-width: 2px;
             border-color: self.background.darker(20%);
             ta := TouchArea {
-                // 点击事件，回传给 Rust 处理
-                clicked => {CalcLogic.button-pressed(root.text)}
+                // Button初始化
+                init => { debug("Button init"); }
+                // Button点击事件，回传给 Rust 处理
+                clicked => {
+                    debug("Button clicked");
+                    CalcLogic.button-pressed(root.text)
+                }
             }
             Text {text: root.text;}
         }
@@ -84,6 +89,7 @@ slint::slint! {
     export component App inherits Window {
         title: "Slint Calculator";
         in property <int> value: 0 ;
+        // Slint 内嵌的网格组件
         GridLayout {
             padding: 10px;
             spacing: 5px;

@@ -17,7 +17,6 @@ slint::slint!{
     }
 
     //------ MdiWindow ----
-
     component MdiWindow inherits Rectangle {
         in property <string> title;
         in-out property <length> window-x <=> window.x;
@@ -145,14 +144,13 @@ slint::slint!{
         }
     }
 
-    //------ Widgets ------
-
+    //------ Widgets 小部件样例，需要从std-widgets.slint文件导入------
     import {LineEdit, TextEdit, ComboBox, GridBox, VerticalBox, HorizontalBox, StyleMetrics} from "std-widgets.slint";
-
+    // Label组件
     component Label inherits Text {
         color: Palette.text-color;
     }
-
+    // Button组件
     component Button inherits TouchArea {
         min-height: t.min-height;
         min-width: t.min-width + 10px;
@@ -200,7 +198,7 @@ slint::slint!{
             }
         }
     }
-
+      // RadioButton组件
     component RadioButton inherits TouchArea {
         in-out property <bool> checked;
         in property text <=> t.text;
@@ -230,7 +228,7 @@ slint::slint!{
             }
         }
     }
-
+    // SelectableLabel组件
     component SelectableLabel inherits TouchArea {
         min-height: t.min-height;
         min-width: t.min-width + 10px;
@@ -251,7 +249,7 @@ slint::slint!{
             }
         }
     }
-
+    // Slider组件
     component Slider inherits Rectangle {
         in property<float> maximum: 100;
         in property<float> minimum: 0;
@@ -300,13 +298,13 @@ slint::slint!{
             }
         }
     }
-
+    // 超链接组件
     component Hyperlink inherits Text {
         color: Palette.hyper-blue;
         TouchArea { mouse-cursor: pointer; }
         in-out property<string> link;
     }
-
+    // 拖动条组件
     component DragValue inherits TouchArea {
         in-out property <float> value;
         min-height: t.min-height;
@@ -337,7 +335,7 @@ slint::slint!{
         in-out property <float> _pressed-value;
         mouse-cursor: MouseCursor.ew-resize;
     }
-
+    // 进度条组件
     component ProgressBar inherits Rectangle {
         in-out property <float> value;
         min-height: 24px;
@@ -361,8 +359,7 @@ slint::slint!{
     }
 
 
-    //------ Demo apps -------
-
+    //------ Demo apps  自定义画廊-------
     component Gallery inherits GridBox {
 
         function unsel() { r1.checked = false; r2.checked = false; r3.checked = false; }
@@ -440,7 +437,7 @@ slint::slint!{
         }
         Rectangle {}
     }
-
+    // 输入框
     component TextEditDemo inherits VerticalLayout {
         preferred-height: 150px;
         preferred-width: 300px;
@@ -448,7 +445,7 @@ slint::slint!{
             text: "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
         }
     }
-
+    // 窗体
     export component Demo inherits Window {
         preferred-width: 1024px;
         preferred-height: 800px;

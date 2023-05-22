@@ -5,7 +5,7 @@ fn main() {
 
 // slint 宏构建 UI
 slint::slint!{
-
+    // 全局单例
     global Palette  {
         out property <color> window-background: #eee;
         out property <color> widget-background: #ddd;
@@ -167,7 +167,7 @@ slint::slint!{
             }
         }
     }
-
+    // CheckBox 组件
     component CheckBox inherits TouchArea {
         in-out property <bool> checked;
         in property text <=> t.text;
@@ -198,7 +198,8 @@ slint::slint!{
             }
         }
     }
-      // RadioButton组件
+
+    // RadioButton组件
     component RadioButton inherits TouchArea {
         in-out property <bool> checked;
         in property text <=> t.text;

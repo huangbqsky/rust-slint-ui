@@ -462,7 +462,7 @@ slint::slint!{
         w2 := MdiWindow {
             x:0;y:0;
             visible: false;
-            title: "🗉 TextEdit";
+            title: "TextEdit";
             window-x: 230px;
             window-y: 520px;
             TextEditDemo {  }

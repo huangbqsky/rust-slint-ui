@@ -1,4 +1,4 @@
-import { CheckBox, Button, ListView, LineEdit, StandardButton, VerticalBox, CheckBox, Slider, GroupBox, LineEdit } from "std-widgets.slint";
+import { CheckBox, Button, ListView, LineEdit, StandardButton, VerticalBox, CheckBox, Slider, GroupBox, GridBox, LineEdit } from "std-widgets.slint";
 
 // Window 是一个窗体的根, 这里创建一个窗体
 // 下面是公共属性, 所有的 "可以看见" 的元素都有这些公共属性
@@ -551,6 +551,22 @@ export component Example2 inherits Window  {
         Text {
             text: "Hello World";
             color: blue;
+        }
+    }
+}
+
+export component GridBox inherits Window  {
+    width: 200px;
+    height: 100px;
+
+    GridBox {
+        Row {
+            Rectangle { background: red; }
+            Rectangle { background: blue; }
+        }
+        Row {
+            Rectangle { background: yellow; }
+            Rectangle { background: green; }
         }
     }
 }

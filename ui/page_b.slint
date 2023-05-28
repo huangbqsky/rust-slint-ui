@@ -1,31 +1,40 @@
-import {GroupBox, LineEdit, Button} from "std-widgets.slint";
+import {GroupBox, HorizontalBox, StandardListView, ListView} from "std-widgets.slint";
 
 export component TabPageB inherits Rectangle {
-    // width: 600px;
-    // height: 500px;
-
-    VerticalLayout { 
-        alignment:start;
-        padding-left: 25px;
-        padding-right: 25px;
-
-        Text { 
-            font-size: 27px;
-            font-weight: 700;
-            color: #6776FF;  
-         }
-
-        GroupBox{
-            title:"lineEdit";
-            LineEdit {
-                placeholder-text: "enter text";
+    HorizontalBox {   
+        vertical-stretch: 1;
+        alignment: start;
+        GroupBox {  
+            title: "ListView";
+            ListView {  
+                vertical-stretch: 0;
+                for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] : HorizontalBox {
+                   Image {
+                        width: 24px;
+                        source: @image-url("../icons/at.png");
+                   }
+                   Text {
+                        text: "Item " + i;
+                   }
+                }
             }
         }
 
-        Button {
-            text: "Click Me";
-            clicked => { self.text = "Clicked"; }
-        }
+        GroupBox {  
+            title: "StandardListView";
+            vertical-stretch: 0;
 
+            StandardListView {
+                model: [
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                    {text: "Lorem"}, {text: "ipsum"},{text: "dolor"},{text: "sit"},{text: "amet"},{text: "consetetur"},
+                ];
+            }
+        }
     }
 }

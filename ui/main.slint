@@ -1,6 +1,6 @@
 import { TabPageA } from "./ui/page_a.slint";
 import { TabPageB } from "./ui/page_b.slint";
-import { SliderPage } from "./ui/page_slider.slint";
+import { TabPageC } from "./ui/page_c.slint";
 
 import { Button } from "std-widgets.slint";
 // 创建自己的自定义选项卡小部件Tabs
@@ -12,15 +12,15 @@ export component MainWindow inherits Window {
         tab_bar := HorizontalLayout {
             spacing: 3px;
             Button {
-                text: "Tab1";
+                text: "TabA";
                 clicked => { root.active-tab = 0; }
             }
             Button {
-                text: "Tab2";
+                text: "TabB";
                 clicked => { root.active-tab = 1; }
             }
             Button {
-                text: "Slider";
+                text: "TabC";
                 clicked => { root.active-tab = 2; }
             }
         }
@@ -32,12 +32,12 @@ export component MainWindow inherits Window {
                 animate x { duration: 125ms; easing: ease; }
             }
             TabPageB {
-                background: blue;
+                // background: blue;
                 x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
                 animate x { duration: 125ms; easing: ease; }
             }
-            SliderPage {
-                background: green;
+            TabPageC {
+                // background: green;
                 x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
                 animate x { duration: 125ms; easing: ease; }
             }

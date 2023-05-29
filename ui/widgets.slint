@@ -1,0 +1,146 @@
+// Window 是一个窗体的根, 这里创建一个窗体
+// 下面是公共属性, 所有的 "可以看见" 的元素都有这些公共属性
+// slint中, 所有的子元素默认相对在在父元素的 0, 0 的坐标, 默认是没有布局的, 都重叠在一起
+export component MyWindow inherits Window {
+    // 窗体特有的属性
+    title: "my title";  // 设置窗体标题
+    // icon: ;  // 不会用, 后面再查
+    no-frame: false;  // 窗口是否无边框
+
+    default-font-size: 10px;  // 设置窗口内默认的文字大小
+    // default-font-family: ;  // 设置窗口使用的字体系列
+    default-font-weight: 900;  // 设置窗口默认的字体粗细 100~900
+
+
+    // 公共属性
+    preferred-width: 180px;  // 元素默认的宽度
+    preferred-height: 180px;  // 元素默认的宽度
+    // min-width: 100px;  // 可以被拉伸的最小宽度
+    // min-height: 100px;  // 可以被拉伸的最小高度
+    // max-width: 200px;  // 可以被拉伸的最大宽度
+    // max-height: 200px;  // 可以被拉伸的最大高度
+
+    // width: 100px;  // 设置固定宽度, 后续不可使用鼠标拉伸调整大小(!注意, 这个参数和上面冲突)
+    // height: 100px;  // 设置固定高度, 后续不可使用鼠标拉伸调整大小(!注意, 这个参数和上面冲突)
+  
+    background: green;  // 背景色
+    // visible: false;  // 当设置为false时, 元素和他所有子元素都 不会被 绘制 并且不会对鼠标输入做出反应 默认值true (注意这对窗体无效)
+    // cache-rendering-hint: true;  // 增加渲染速度, 但是增加内存消耗 默认值为 false
+
+    v := VerticalLayout {
+        width: 300px;
+        alignment: stretch;// 对其方式
+        spacing: 10px;  // 布局中每个元素隔开的距离
+        padding: 10px;  // 内padding 和上面可能有重叠类似BFC
+        // padding-left, padding-right,padding-top和padding-bottom( length )：覆盖特定边的填充
+        
+        // max-height: 300px;
+
+        // Rectangle 矩形 是是一个 没有边框 没有内容 的元素 其宽度或高度默认为父元素的 100% https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#rectangle
+        ract := Rectangle{
+            x: 20px;  // 设置元素x轴位置 相对于其父元素的位置
+            y: 20px;  // 设置元素y轴位置 相对于其父元素的位置
+            z: 0;  // 设置z轴 默认为0
+            border-color: blue;  // 边框颜色
+            border-width: 3px;  // 边框粗细
+            border-radius: self.x * 3 - 30px;  // 边框圆角的位置  30px
+            clip: true;  // overflow处理, 是否裁剪子元素, 比如下面的 _temp 矩形 的width 比当前 self 还要宽 下面多余的就不会显示, 默认为false
+            height: 100px;
+            width: 100px;
+            background: red;  // 背景色
+            // 矩形 阴影
+            drop-shadow-offset-x: 10px;  // 设置阴影水平距离
+            drop-shadow-offset-y: -10px;  // 设置阴影垂直距离
+            drop-shadow-color: yellow;  // 设置阴影颜色
+            drop-shadow-blur: 5px;  // 设置阴影的模糊半径 0px表示不进行模糊
+            
+            // 字体 元素 https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#text
+            text := Text {
+                text: "你好hello0012345123asdf哈";
+                font-size: 25px;  // 设置文字大小
+                width:90px;  // 指定元素宽度
+                height: 100px;
+                wrap: TextWrap.word-wrap;  // 设置超过字体宽度或者高度换行
+                overflow: TextOverflow.elide;  // 文本溢出的时候会发生什么 默认会剪掉 clip, 比如这个就高度剪掉了
+        
+                // horizontal-alignment  // 文本水平对齐方式
+                // vertical-alignment  // 文本垂直对齐方式
+                letter-spacing: 10px;  // 字体间距
+
+                opacity: 0.2;  // 设置透明度: 用于绘制具有透明度的元素及其子元素 默认值为1不透明
+        
+                // font-family: ;  // 指定的字体名称
+                // font-size: ;  // 指定字体大小
+                // font-weight: ;  // 指定字体粗细
+                color: green;
+            }
+            
+           // TouchArea 控制它覆盖的区域被触摸或者使用鼠标交互会发生什么, 默认宽高为父元素的 100%
+           area := TouchArea {
+                width: parent.width;  // 虽然手动设置了宽高, 但是他本身就是父元素的100%
+                height: parent.height;
+
+                // clicked => { 
+                //     ract.background = #e847b5;
+                //  }
+                 pointer-event(p) => { 
+                    debug(p);
+                    ract.background = #e847b5;
+                }
+             }
+        }
+        
+        // 图片 元素, 只支持svg格式图片  https://github.com/slint-ui/slint/blob/master/docs/builtin_elements.md#image
+        image := Image {
+            x: 10px;
+            y: 120px;
+            source: @image-url("https://slint-ui.com/logo/slint-logo-full-light.svg");  // 资源路径
+            width: 250px;  // 设置宽度, 默认值是source图像提供的尺寸, 如果手动设定了width或者height 其中任意一个, 则另一个会进行等比例缩放
+
+            // 缩放相关
+            // image-fit  // 指定图像的缩放方式
+            // image-rendering  指定图像的缩放算法
+
+            // 旋转
+            rotation-origin-x: 10px;  // 设置旋转中心的x轴位置
+            rotation-origin-y: 10px;  // 设置旋转中心y轴的位置
+            rotation-angle: 30deg;  // 旋转角度 单位 deg
+    
+            // 精灵图
+            // source-clip-x: 0;  // 切割从源资源的x轴位置
+            // source-clip-y: 0;  // 切割从源资源的y轴的位置
+            // source-clip-height: 90;  // 切割高度
+            // source-clip-width: 300;  // 切割宽度
+
+            // colorize: red;  // 设置后，图像用作 alpha 蒙版并淹没在给定颜色 或渐变中
+        } 
+        
+        textInput := TextInput {
+            text: "请输入消息";  // 实际的文本
+            // font-family: ;  // 字体名称
+            font-size: 20px;
+            font-weight: 900;
+            color: pink;
+            horizontal-alignment: TextVerticalAlignment.top;  // 文本水平对齐方式 
+            // vertical-alignment: ;  // 文本垂直对齐方式
+
+            // has-focus: true;  // 当项目获得焦点并接收键盘事件的时候改变这个属性
+            letter-spacing: 0;  // 字体间距, 正数增加间距, 负数减少间距, 默认0
+            read-only: false;  // 当为 true的时候禁止通过鼠标和键盘编辑, 默认为 false
+            single-line: false;  // 设置为 true的时候禁止换行, 默认 true
+            wrap: TextWrap.word-wrap;  // 文本输入的换行方式, 当 single-line 为false 的时候才有意义
+            // input-type  enum InputType  // 文本的样式 分为 password 和 text, 默认为text
+    
+            accepted() => {
+                debug(" 按下了回车");
+            }
+            edited() => {
+                debug(" 修改了文本");
+            }
+            cursor-position-changed(p) => {
+                debug("光标的位置移动了");
+                debug(p);
+            }
+        }
+    } 
+}

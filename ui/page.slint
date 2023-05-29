@@ -1,14 +1,15 @@
-import { CheckBox, GridBox, ListView, ScrollView, VerticalBox } from "std-widgets.slint";
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
 
+// Page的模版组件，提供统一样式的页面布局以供选择。
 export component Page inherits VerticalBox {
     in property<string> title: "title";
-    in property<string> description: "description";
-
-    VerticalBox { 
-        // spacing: 5px;
-       padding-left: 25px;
-       padding-right: 25px;
-       alignment: start;
+    alignment: start;
+    
+    HorizontalBox { 
+       // spacing: 5px;
+       // padding-left: 5px;
+       // padding-right: 5px;
+       // alignment: start;
         
         Text {  
             font-size: 20px;

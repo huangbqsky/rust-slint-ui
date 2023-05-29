@@ -3,90 +3,63 @@ import {
     StandardTableView, TabWidget, GroupBox, HorizontalBox, VerticalBox, TextEdit, AboutSlint
 } from "std-widgets.slint";
 
-export component TabPageC inherits Rectangle {
-    VerticalBox {  
-        width: parent.width;
-        height: parent.height;
-        alignment: start;
-
-        // TabWidget
-        TabWidget {  
-            width: parent.width;
-            height: 202px;
-            Tab {
-                title: "Tab 1";
-                HorizontalLayout {
-                    spacing: 5px;
-                    // height: 30px;
-                    Rectangle { background: red; width: 20px; }
-                    Rectangle { background: blue; min-width: 10px; }
-                    Rectangle { background: yellow; horizontal-stretch: 1; }
-                    Rectangle { background: green; horizontal-stretch: 2; }
-                }
-   
-            }
-            Tab {
-                title: "Tab 2";
-                VerticalLayout {
-                    spacing: 5px;
-                    // height: 30px;
-                    Rectangle { background: red; width: 20px; }
-                    Rectangle { background: blue; min-width: 10px; }
-                    Rectangle { background: yellow; horizontal-stretch: 1; }
-                    Rectangle { background: green; horizontal-stretch: 2; }
-                }
-            }
-            Tab {
-                title: "Tab 3";
-                AboutSlint {}
-            }
-        }  
-        // TextEdit wrap and no-wrap
-        HorizontalBox {   
-            GroupBox {
-                vertical-stretch: 0;
-                title: "Word-Wrap";
-                te1 := TextEdit {
-                    min-width: 200px;
-                    text: "This is our TextEdit widget, which allows for editing text that spans over multiple paragraphs.\nFor example this line starts in a new paragraph.\n\nWhen the amount of lines - due to wrapping and number of paragraphs - exceeds the available vertical height, a vertical scrollbar is shown that allows scrolling.\nYou may want to enter a bit of text here then in order to make them visible.";
-                    wrap: word-wrap;
-                    enabled: true;
-                }
-            }
-    
-            GroupBox {
-                title: "No-Wrap";
-                vertical-stretch: 0;
-                te2 := TextEdit {
-                    min-width: 200px;
-                    text <=> te1.text;
-                    wrap: no-wrap;
-                    enabled: true;
-                }
-            }      
+import { Page } from "page.slint";
+export component TabPageC inherits Page {
+    title: "TabPageC";
+    Flickable {
+        viewport-height: 300px;
+        Text {
+            x:0;
+            y: 150px;
+            text: "This is some text that you have to scroll to see";
         }
-  
-        // StandardTableView 
-        Rectangle  {
-            width: parent.width * 3 / 4;
-            height: 202px;
-            border-color: #86e086;
-            border-width: 1px;
-            
-            StandardTableView {
-                width: parent.width;
-                height: 200px;
-                columns: [
-                    { title: "colum 1" },
-                    { title: "colum 2" },
-                ];
-                rows: [
-                    [{ text: "item 11" }, { text: "item 12" },],
-                    [{ text: "item 21" }, { text: "item 22" },],
-                    [{ text: "item 31" }, { text: "item 32" },]
-                ];
-            }
-        } 
-
     }
+
+    // TextEdit wrap and no-wrap
+    HorizontalBox {  
+        height: 200px; 
+        GroupBox {
+            vertical-stretch: 0;
+            title: "Word-Wrap";
+            te1 := TextEdit {
+                min-width: 200px;
+                text: "This is our TextEdit widget, which allows for editing text that spans over multiple paragraphs.\nFor example this line starts in a new paragraph.\n\nWhen the amount of lines - due to wrapping and number of paragraphs - exceeds the available vertical height, a vertical scrollbar is shown that allows scrolling.\nYou may want to enter a bit of text here then in order to make them visible.";
+                wrap: word-wrap;
+                enabled: true;
+            }
+        }
+
+        GroupBox {
+            title: "No-Wrap";
+            vertical-stretch: 0;
+            te2 := TextEdit {
+                min-width: 200px;
+                text <=> te1.text;
+                wrap: no-wrap;
+                enabled: true;
+            }
+        }      
+    }
+
+    // StandardTableView 
+    Rectangle  {
+        width: parent.width * 3 / 4;
+        height: 200px;
+        border-color: #86e086;
+        border-width: 1px;
+        
+        StandardTableView {
+            width: parent.width;
+            height: 200px;
+            columns: [
+                { title: "colum 1" },
+                { title: "colum 2" },
+            ];
+            rows: [
+                [{ text: "item 11" }, { text: "item 12" },],
+                [{ text: "item 21" }, { text: "item 22" },],
+                [{ text: "item 31" }, { text: "item 32" },]
+            ];
+        }
+    } 
 }

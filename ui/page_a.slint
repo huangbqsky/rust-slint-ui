@@ -2,98 +2,93 @@ import {
     GroupBox, LineEdit, Button, 
     VerticalBox, HorizontalBox,
     ComboBox,CheckBox,Slider, SpinBox,
-    StandardButton, StandardTableView,TabWidget,
-    StandardListView, ListView, ScrollView
+    StandardButton
 } from "std-widgets.slint";
+import { Page } from "page.slint";
 
-export component TabPageA inherits Rectangle {
-    // width: 600px;
-    // height: 1000px;
-    VerticalBox { 
-         // spacing: 5px;
-        padding-left: 25px;
-        padding-right: 25px;
-        alignment: start;
+export component TabPageA inherits Page {
+    title: "TabPageA";
 
-        GroupBox { 
-            vertical-stretch: 0;
-            title: "Buttons";
-    
-            HorizontalLayout {  
-                spacing: 8px;
-                alignment: start;
-    
-                Button {
-                    text: "Regular Button";
-                    enabled: true;
-                }   
-    
-                Button {
-                    text: "Button with Icon";
-                    icon: @image-url("../icons/at.png");
-                    enabled: true;
-                }
-    
-                Button {
-                    checkable: true;
-                    text: self.checked ? "ON" : "OFF";
-                    enabled: true;
-                }
-                StandardButton { kind: ok; }
-                StandardButton { kind: apply; }
-                StandardButton { kind: cancel; }
-            }
-        }
+    GroupBox { 
+        vertical-stretch: 0;
+        title: "Buttons";
 
-        GroupBox {
-            title: "CheckBox - SpinBox - ComboBox";
-            vertical-stretch: 0;
-    
-            HorizontalBox {
-                alignment: start;
-                checkbox := CheckBox {
-                    text: checkbox.checked ? "(checked)" : "(unchecked)";
-                    checked: true;
-                    enabled: true;
-                }
-    
-    
-                SpinBox {
-                    vertical-stretch: 0;
-                    value: 42;
-                    enabled: true;
-                }
-        
-                ComboBox {
-                    model: ["Select Something", "From this", "Combobox"];
-                    enabled: true;
-                }
-           }
-                          
-        }
+        HorizontalLayout {  
+            spacing: 8px;
+            alignment: start;
 
-        GroupBox {  
-            title: "LineEdit";
-            vertical-stretch: 0;
-            // LineEdit 用于输入单行文本的小部件
-            // 他的属性和多行输入的部件TextInput基本相同   
-            LineEdit {
-                placeholder-text: "Enter some text";
+            Button {
+                text: "Regular Button";
+                enabled: true;
+            }   
+
+            Button {
+                text: "Button with Icon";
+                icon: @image-url("../icons/at.png");
                 enabled: true;
             }
+
+            Button {
+                checkable: true;
+                text: self.checked ? "ON" : "OFF";
+                enabled: true;
+            }
+            // 几种StandardButton 
+            StandardButton { kind: ok; }
+            StandardButton { kind: apply; }
+            StandardButton { kind: cancel; }
         }
-    
-        GroupBox {  
-            title: "Slider";
-            vertical-stretch: 0;
-    
-            Slider {
-                min-width: 160px;
-                minimum: -100;
-                maximum: 100;
+    }
+
+    GroupBox {
+        title: "CheckBox - SpinBox - ComboBox";
+        vertical-stretch: 0;
+
+        HorizontalBox {
+            alignment: start;
+            // 复选框
+            checkbox := CheckBox {
+                text: checkbox.checked ? "(checked)" : "(unchecked)";
+                checked: true;
+                enabled: true;
+            }
+            // 旋转选值器
+            SpinBox {
+                vertical-stretch: 0;
                 value: 42;
                 enabled: true;
             }
+            // 下拉选值器
+            ComboBox {
+                model: ["Select Something", "From this", "Combobox"];
+                enabled: true;
+            }
+       }               
+    }
+
+    GroupBox {  
+        title: "Slider";
+        vertical-stretch: 0;
+        // Slider 可以拉选的进度框
+        Slider {
+            min-width: 160px;
+            minimum: -100;
+            maximum: 100;
+            value: 42;
+            enabled: true;
         }
     }
+
+    GroupBox {  
+        title: "LineEdit";
+        vertical-stretch: 0;
+        // LineEdit 用于输入单行文本的小部件
+        // 他的属性和多行输入的部件TextInput基本相同   
+        LineEdit {
+            placeholder-text: "Enter some text";
+            enabled: true;
+        }
+    }
+
 }
+

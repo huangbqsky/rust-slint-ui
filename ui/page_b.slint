@@ -1,11 +1,15 @@
 import {GroupBox, HorizontalBox, StandardListView, ListView} from "std-widgets.slint";
+import { Page } from "page.slint";
 
-export component TabPageB inherits Rectangle {
+export component TabPageB inherits Page {
+    title: "TabPageB";
+
     HorizontalBox {   
         vertical-stretch: 1;
-        alignment: start;
+        min-height: 500px;
         GroupBox {  
             title: "ListView";
+
             ListView {  
                 vertical-stretch: 0;
                 for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] : HorizontalBox {
@@ -37,4 +41,5 @@ export component TabPageB inherits Rectangle {
             }
         }
     }
+
 }

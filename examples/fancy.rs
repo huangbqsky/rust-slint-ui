@@ -213,6 +213,7 @@ slint::slint!{
                     border-width: 1.5px;
                     border-color: root.has-hover ? Palette.widget-stroke : transparent;
                     border-radius: self.width / 2;
+                    // 注意这个.darker(30%) 表示色值是darker模式，并且是30%
                     background: root.pressed ? Palette.widget-background.darker(30%) : Palette.widget-background;
                     if root.checked : Rectangle {
                         background: root.has-hover ? Palette.widget-stroke.darker(100%) : Palette.widget-stroke;

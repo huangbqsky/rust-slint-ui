@@ -12,7 +12,8 @@ members = [
     'printerdemo', # slint 嵌入式打印机 demo 工程
     'todo', # slint todo 例子工程
     'ffmpeg', # slint ffmpeg 例子工程
-    'android_calculator' # 使用 Slint 开发 Android 计算器例子工程
+    #'android_calculator', # 使用 Slint 开发 Android 计算器例子工程
+    'android_demo' # 使用 Slint 1.5 开发 Android 工程
 ]
 
 [dependencies]

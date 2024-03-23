@@ -8,5 +8,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 slint = { version = "1.5", features = ["backend-android-activity-05"] }
+# slint = { git = "https://github.com/slint-ui/slint", branch = "master", features = ["backend-android-activity-05"]}
+
 # slint = "1.5.0"
 # i-slint-backend-android-activity = { version = "=1.5.0", features = ["native-activity"] }
+# i-slint-backend-android-activity = "1.5.0"
